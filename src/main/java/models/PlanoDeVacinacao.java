@@ -2,19 +2,23 @@ package models;
 
 import models.enums.Comorbidades;
 import models.enums.Profissao;
+import models.observable.Observable;
+import models.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlanoDeVacinacao {
+public class PlanoDeVacinacao implements Observable {
 
     private Integer idadeMinimaParaVacinacao;
+    private List<Observer> cidadaos;
     private final List<Profissao> profissoesPermitidas;
     private final List<Comorbidades> comorbidadesPermitidas;
 
     public PlanoDeVacinacao() {
         profissoesPermitidas = new ArrayList<>();
         comorbidadesPermitidas = new ArrayList<>();
+        cidadaos = new ArrayList<>();
     }
 
     public Integer getIdadeMinimaParaVacinacao() {
@@ -23,6 +27,7 @@ public class PlanoDeVacinacao {
 
     public void setIdadeMinimaParaVacinacao(Integer idadeMinimaParaVacinacao) {
         this.idadeMinimaParaVacinacao = idadeMinimaParaVacinacao;
+        atualizouPlanoDeVacinacao();
     }
 
     public List<Profissao> getProfissoesPermitidas() {
@@ -33,20 +38,33 @@ public class PlanoDeVacinacao {
         return comorbidadesPermitidas;
     }
 
-
     public void addComorbidadePermitida(Comorbidades comorbidade) {
         comorbidadesPermitidas.add(comorbidade);
+        atualizouPlanoDeVacinacao();
     }
 
     public void addProfissaoPermitida(Profissao profissao) {
         profissoesPermitidas.add(profissao);
+        atualizouPlanoDeVacinacao();
     }
 
-    public void removeProfissaoPermitida(Profissao profissao) {
-        profissoesPermitidas.remove(profissao);
+    public void addObserver(Observer observer) {
+        cidadaos.add(observer);
     }
 
-    public void removeComorbidadePermitida(Comorbidades comorbidades) {
-        comorbidadesPermitidas.remove(comorbidades);
+    public void removeObserver(Observer observer) {
+        cidadaos.remove(observer);
     }
+
+    @Override
+    public void atualizouPlanoDeVacinacao() {
+        notificaCidadaos();
+    }
+
+    @Override
+    public void notificaCidadaos() {
+        cidadaos.forEach(cidadao -> cidadao.update(this));
+    }
+
+
 }

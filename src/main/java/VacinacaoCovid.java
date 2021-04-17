@@ -7,24 +7,17 @@ import java.time.LocalDate;
 
 public class VacinacaoCovid {
 
-    public static PlanoDeVacinacao definePlanoDeVacinacao(
-            Integer idadePermitida,
-            Profissao profissaoPermitida,
-            Comorbidades comorbidadePermitida
-    ) {
+    public static void definePlanoDeVacinacaoInicial(PlanoDeVacinacao planoDeVacinacao, Integer idadePermitida,
+            Profissao profissaoPermitida, Comorbidades comorbidadePermitida) {
 
-        PlanoDeVacinacao planoDeVacinacao = new PlanoDeVacinacao();
         planoDeVacinacao.setIdadeMinimaParaVacinacao(idadePermitida);
         planoDeVacinacao.addProfissaoPermitida(profissaoPermitida);
         planoDeVacinacao.addComorbidadePermitida(comorbidadePermitida);
-
-        return planoDeVacinacao;
     }
 
     public static void main(String[] args) {
 
-        PlanoDeVacinacao planoDeVacinacao =
-                definePlanoDeVacinacao(80, Profissao.SAUDE, Comorbidades.NIVEL_A);
+        PlanoDeVacinacao planoDeVacinacao = new PlanoDeVacinacao();
 
         Cidadao cidadao = new Cidadao(
                 "Maria Pereira",
@@ -36,17 +29,21 @@ public class VacinacaoCovid {
                 Comorbidades.SEM_COMORBIDADES
         );
 
+        planoDeVacinacao.addObserver(cidadao);
+
+        definePlanoDeVacinacaoInicial(planoDeVacinacao,80, Profissao.SAUDE, Comorbidades.NIVEL_A);
+
         System.out.println(cidadao.getStatusDeVacinacao().toString());
-        cidadao.getStatusDeVacinacao().registraData();
-        cidadao.getStatusDeVacinacao().habilitaParaPrimeiraDose(
-                planoDeVacinacao.getIdadeMinimaParaVacinacao(),
-                planoDeVacinacao.getProfissoesPermitidas(),
-                planoDeVacinacao.getComorbidadesPermitidas()
-        );
+//        cidadao.getStatusDeVacinacao().registraData();
+//        cidadao.getStatusDeVacinacao().habilitaParaPrimeiraDose(
+//                planoDeVacinacao.getIdadeMinimaParaVacinacao(),
+//                planoDeVacinacao.getProfissoesPermitidas(),
+//                planoDeVacinacao.getComorbidadesPermitidas()
+//        );
 
         //A cidadã se habilitará para a primeira dose.
 
-        System.out.println(cidadao.getStatusDeVacinacao());
+//        System.out.println(cidadao.getStatusDeVacinacao());
 
         //Aplicando a dose no cidadão:
         cidadao.getStatusDeVacinacao().aplicarDose();

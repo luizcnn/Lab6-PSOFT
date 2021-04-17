@@ -19,31 +19,28 @@ public class NaoHabilitado implements StatusDeVacinacao {
     }
 
     @Override
-    public void habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas,
-            List<Comorbidades> comorbidadesPermitidas) {
+    public boolean habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas,
+                                            List<Comorbidades> comorbidadesPermitidas) {
         List<String> resultados = Arrays.asList(
                 verificaIdade(idadePermitida),
                 verificaProfissao(profissoesPermitidas),
                 verificaComorbidades(comorbidadesPermitidas)
         );
 
-        boolean controle = true;
-
         for(String resultado : resultados) {
             if(nonNull(resultado)) {
                 System.out.println(resultado);
-                controle = false;
-                break;
+                return true;
             }
         }
 
-        if(controle) {
-            System.out.printf(
-                    "O cidadão %s de CPF %s no momento não se enquadra nos critérios do plano de vacinação.",
-                    cidadao.getNome(),
-                    cidadao.getCpf()
-            );
-        }
+        System.out.println(String.format(
+                "O cidadão %s de CPF %s no momento não se enquadra nos critérios do plano de vacinação.",
+                cidadao.getNome(),
+                cidadao.getCpf()
+        ));
+        return false;
+
     }
 
     @Override

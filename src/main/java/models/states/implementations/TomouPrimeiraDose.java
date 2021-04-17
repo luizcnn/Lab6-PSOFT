@@ -17,8 +17,9 @@ public class TomouPrimeiraDose implements StatusDeVacinacao {
     }
 
     @Override
-    public void habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas, List<Comorbidades> comorbidadesPermitidas) {
+    public boolean habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas, List<Comorbidades> comorbidadesPermitidas) {
         System.out.println("Verificação desnecessária. O cidadão já tomou a primeira dose.");
+        return false;
     }
 
     @Override

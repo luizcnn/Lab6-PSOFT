@@ -17,8 +17,9 @@ public class HabilitadoParaSegundaDose implements StatusDeVacinacao {
     }
 
     @Override
-    public void habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas, List<Comorbidades> comorbidadesPermitidas) {
+    public boolean habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas, List<Comorbidades> comorbidadesPermitidas) {
         System.out.println("O cidadão já iniciou o processo de vacinação");
+        return false;
     }
 
     @Override

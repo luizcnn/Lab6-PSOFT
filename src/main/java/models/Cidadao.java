@@ -2,12 +2,14 @@ package models;
 
 import models.enums.Comorbidades;
 import models.enums.Profissao;
+import models.observer.Observer;
 import models.states.StatusDeVacinacao;
+import models.states.implementations.HabilitadoParaPrimeiraDose;
 import models.states.implementations.NaoHabilitado;
 
 import java.time.LocalDate;
 
-public class Cidadao {
+public class Cidadao implements Observer {
 
     private final String nome;
     private Integer idade;
@@ -111,5 +113,14 @@ public class Cidadao {
 
     public void setComorbidades(Comorbidades comorbidades) {
         this.comorbidades = comorbidades;
+    }
+
+    @Override
+    public void update(PlanoDeVacinacao planoDeVacinacao) {
+        this.statusDeVacinacao.habilitaParaPrimeiraDose(
+                planoDeVacinacao.getIdadeMinimaParaVacinacao(),
+                planoDeVacinacao.getProfissoesPermitidas(),
+                planoDeVacinacao.getComorbidadesPermitidas()
+        );
     }
 }

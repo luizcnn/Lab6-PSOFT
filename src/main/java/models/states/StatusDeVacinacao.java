@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface StatusDeVacinacao {
 
-    void habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas,
+    boolean habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas,
                                   List<Comorbidades> comorbidadesPermitidas);
     void registraData();
     void aplicarDose();

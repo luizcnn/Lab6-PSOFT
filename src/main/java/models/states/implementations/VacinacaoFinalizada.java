@@ -16,8 +16,9 @@ public class VacinacaoFinalizada implements StatusDeVacinacao {
     }
 
     @Override
-    public void habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas, List<Comorbidades> comorbidadesPermitidas) {
+    public boolean habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas, List<Comorbidades> comorbidadesPermitidas) {
         System.out.println(String.format(MSG, cidadao.getNome(), cidadao.getCpf()));
+        return false;
     }
 
     @Override
