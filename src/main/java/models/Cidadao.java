@@ -1,30 +1,26 @@
 package models;
 
-import models.enums.Comorbidades;
-import models.enums.Profissao;
-import models.observer.Observer;
 import models.states.StatusDeVacinacao;
-import models.states.implementations.HabilitadoParaPrimeiraDose;
 import models.states.implementations.NaoHabilitado;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-public class Cidadao implements Observer {
+public class Cidadao {
 
     private final String nome;
     private Integer idade;
     private final String cpf;
     private String endereco;
     private String cartaoSUS;
-    private String email;
-    private String telefone;
-    private Profissao profissao;
-    private Comorbidades comorbidades;
+    private String profissao;
+    private Set<String> comorbidades;
     private StatusDeVacinacao statusDeVacinacao;
     private LocalDate dataDeVacinacao;
+    private PlanoDeVacinacao planoDeVacinacao;
 
-    public Cidadao(String nome, Integer idade, String cpf, String endereco, String cartaoSUS, Profissao profissao,
-                   Comorbidades comorbidades) {
+    public Cidadao(String nome, Integer idade, String cpf, String endereco, String cartaoSUS, String profissao,
+                   Set<String> comorbidades) {
         this.nome = nome;
         this.idade = idade;
         this.cpf = cpf;
@@ -59,19 +55,12 @@ public class Cidadao implements Observer {
         return cartaoSUS;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public Profissao getProfissao() {
+    public String getProfissao() {
         return profissao;
     }
 
-    public Comorbidades getComorbidades() {
+    public Set<String> getComorbidades() {
         return comorbidades;
     }
 
@@ -81,14 +70,6 @@ public class Cidadao implements Observer {
 
     public LocalDate getDataDeVacinacao() {
         return dataDeVacinacao;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public void setDataDeVacinacao(LocalDate dataDeVacinacao) {
@@ -107,20 +88,23 @@ public class Cidadao implements Observer {
         this.cartaoSUS = cartaoSUS;
     }
 
-    public void setProfissao(Profissao profissao) {
+    public void setProfissao(String profissao) {
         this.profissao = profissao;
     }
 
-    public void setComorbidades(Comorbidades comorbidades) {
+    public void setComorbidades(Set<String> comorbidades) {
         this.comorbidades = comorbidades;
     }
 
-    @Override
-    public void update(PlanoDeVacinacao planoDeVacinacao) {
-        this.statusDeVacinacao.habilitaParaPrimeiraDose(
-                planoDeVacinacao.getIdadeMinimaParaVacinacao(),
-                planoDeVacinacao.getProfissoesPermitidas(),
-                planoDeVacinacao.getComorbidadesPermitidas()
-        );
+    public void addComorbidade(String comorbidade) {
+        this.comorbidades.add(comorbidade);
+    }
+
+    public PlanoDeVacinacao getPlanoDeVacinacao() {
+        return planoDeVacinacao;
+    }
+
+    public void setPlanoDeVacinacao(PlanoDeVacinacao planoDeVacinacao) {
+        this.planoDeVacinacao = planoDeVacinacao;
     }
 }

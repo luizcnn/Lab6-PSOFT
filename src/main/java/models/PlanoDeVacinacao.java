@@ -1,24 +1,21 @@
 package models;
 
-import models.enums.Comorbidades;
-import models.enums.Profissao;
-import models.observable.Observable;
-import models.observer.Observer;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class PlanoDeVacinacao implements Observable {
+public class PlanoDeVacinacao {
 
     private Integer idadeMinimaParaVacinacao;
-    private List<Observer> cidadaos;
-    private final List<Profissao> profissoesPermitidas;
-    private final List<Comorbidades> comorbidadesPermitidas;
+    private final Map<String, Cidadao> cidadaos;
+    private final Set<String> profissoesPermitidas;
+    private final Set<String> comorbidadesPermitidas;
 
     public PlanoDeVacinacao() {
-        profissoesPermitidas = new ArrayList<>();
-        comorbidadesPermitidas = new ArrayList<>();
-        cidadaos = new ArrayList<>();
+        this.profissoesPermitidas = new HashSet<>();
+        this.comorbidadesPermitidas = new HashSet<>();
+        this.cidadaos = new HashMap<>();
     }
 
     public Integer getIdadeMinimaParaVacinacao() {
@@ -27,44 +24,39 @@ public class PlanoDeVacinacao implements Observable {
 
     public void setIdadeMinimaParaVacinacao(Integer idadeMinimaParaVacinacao) {
         this.idadeMinimaParaVacinacao = idadeMinimaParaVacinacao;
-        atualizouPlanoDeVacinacao();
     }
 
-    public List<Profissao> getProfissoesPermitidas() {
+    public Set<String> getProfissoesPermitidas() {
         return profissoesPermitidas;
     }
 
-    public List<Comorbidades> getComorbidadesPermitidas() {
+    public Set<String> getComorbidadesPermitidas() {
         return comorbidadesPermitidas;
     }
 
-    public void addComorbidadePermitida(Comorbidades comorbidade) {
+    public void addComorbidadePermitida(String comorbidade) {
         comorbidadesPermitidas.add(comorbidade);
-        atualizouPlanoDeVacinacao();
     }
 
-    public void addProfissaoPermitida(Profissao profissao) {
+    public void addProfissaoPermitida(String profissao) {
         profissoesPermitidas.add(profissao);
-        atualizouPlanoDeVacinacao();
     }
 
-    public void addObserver(Observer observer) {
-        cidadaos.add(observer);
+    public void addCidadao(Cidadao cidadao) {
+        cidadao.setPlanoDeVacinacao(this);
+        this.cidadaos.put(cidadao.getCpf(), cidadao);
     }
 
-    public void removeObserver(Observer observer) {
-        cidadaos.remove(observer);
+    public Map<String, Cidadao> getCidadaos() {
+        return this.cidadaos;
     }
 
-    @Override
-    public void atualizouPlanoDeVacinacao() {
-        notificaCidadaos();
+    public Cidadao getCidadao(String cpf) {
+        if(!this.cidadaos.containsKey(cpf)) {
+            System.out.println("O CPF informado não consta no cadastro.");
+            return null;
+        } else {
+            return this.cidadaos.get(cpf);
+        }
     }
-
-    @Override
-    public void notificaCidadaos() {
-        cidadaos.forEach(cidadao -> cidadao.update(this));
-    }
-
-
 }

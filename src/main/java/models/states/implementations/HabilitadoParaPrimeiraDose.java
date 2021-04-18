@@ -1,13 +1,10 @@
 package models.states.implementations;
 
 import models.Cidadao;
-import models.enums.Comorbidades;
-import models.enums.Profissao;
 import models.states.StatusDeVacinacao;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class HabilitadoParaPrimeiraDose implements StatusDeVacinacao {
 
@@ -18,32 +15,27 @@ public class HabilitadoParaPrimeiraDose implements StatusDeVacinacao {
     }
 
     @Override
-    public boolean habilitaParaPrimeiraDose(Integer idadePermitida, List<Profissao> profissoesPermitidas, List<Comorbidades> comorbidadesPermitidas) {
-        System.out.println("O cidadão já está habilitado para tomar a primeira dose.");
-        return false;
+    public void update() {
+        aplicarDose();
     }
 
-    @Override
     public void registraData() {
         if(cidadao.getStatusDeVacinacao() instanceof TomouPrimeiraDose) {
             LocalDate registro = LocalDate.now();
-            System.out.println("Data de Vacinação (1a dose): " + registro.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            System.out.printf("Data de Vacinação (1a dose) de %s (CPF: %s): %s\n",
+                    cidadao.getNome(),
+                    cidadao.getCpf(),
+                    registro.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            );
             cidadao.setDataDeVacinacao(registro);
         } else {
             System.out.println("Você deve tomar a dose antes de registrar a data de vacinação.");
         }
     }
 
-    @Override
     public void aplicarDose() {
-        System.out.println("Aplicando a dose e registrando a data de vacinação...");
         cidadao.changeStatus(new TomouPrimeiraDose(cidadao));
         registraData();
-    }
-
-    @Override
-    public void verificaIntervaloParaSegundaDose() {
-        System.out.println("Você ainda não tomou a primeira dose. Após toma-la, aguarde 20 dias para a próxima dose.");
     }
 
     @Override
