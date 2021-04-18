@@ -1,5 +1,7 @@
 package models;
 
+import models.states.implementations.NaoHabilitado;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,6 +26,7 @@ public class PlanoDeVacinacao {
 
     public void setIdadeMinimaParaVacinacao(Integer idadeMinimaParaVacinacao) {
         this.idadeMinimaParaVacinacao = idadeMinimaParaVacinacao;
+        notificaCidadaosSobreMudancasNosCriterios();
     }
 
     public Set<String> getProfissoesPermitidas() {
@@ -36,10 +39,12 @@ public class PlanoDeVacinacao {
 
     public void addComorbidadePermitida(String comorbidade) {
         comorbidadesPermitidas.add(comorbidade);
+        notificaCidadaosSobreMudancasNosCriterios();
     }
 
     public void addProfissaoPermitida(String profissao) {
         profissoesPermitidas.add(profissao);
+        notificaCidadaosSobreMudancasNosCriterios();
     }
 
     public void addCidadao(Cidadao cidadao) {
@@ -58,5 +63,12 @@ public class PlanoDeVacinacao {
         } else {
             return this.cidadaos.get(cpf);
         }
+    }
+
+    public void notificaCidadaosSobreMudancasNosCriterios() {
+        cidadaos.values().forEach(cidadao -> {
+            if (cidadao.getStatusDeVacinacao() instanceof NaoHabilitado)
+                cidadao.getStatusDeVacinacao().update();
+        });
     }
 }

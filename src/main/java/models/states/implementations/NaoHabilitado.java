@@ -5,9 +5,7 @@ import models.states.StatusDeVacinacao;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
@@ -28,24 +26,12 @@ public class NaoHabilitado implements StatusDeVacinacao {
 
     @Override
     public void aplicarDose() {
-        System.out.printf(toString());
+        System.out.println(toString());
     }
 
     public boolean habilitaParaPrimeiraDose() {
-
-        List<String> resultados = Arrays.asList(verificaIdade(), verificaProfissao(), verificaComorbidades());
-
-        if (resultados.stream().allMatch(Predicate.isEqual(null))) {
-            System.out.println(String.format(
-                    "O cidadão %s de CPF: %s no momento não se enquadra nos critérios do plano de vacinação.",
-                    cidadao.getNome(),
-                    cidadao.getCpf()
-            ));
-            return false;
-        } else {
-            resultados.stream().filter(Objects::nonNull).findFirst().ifPresent(System.out::println);
-            return true;
-        }
+        List<Boolean> resultados = Arrays.asList(verificaIdade(), verificaProfissao(), verificaComorbidades());
+        return resultados.stream().anyMatch(Predicate.isEqual(true));
     }
 
     @Override
@@ -57,40 +43,17 @@ public class NaoHabilitado implements StatusDeVacinacao {
         );
     }
 
-    private String verificaIdade() {
-        if (nonNull(cidadao.getPlanoDeVacinacao().getIdadeMinimaParaVacinacao()) &&
-                cidadao.getIdade() > cidadao.getPlanoDeVacinacao().getIdadeMinimaParaVacinacao()) {
-            return String.format(
-                    "Pelo critério de idade, o cidadão %s de CPF: %s está habilitado para tomar a primeira dose.%n",
-                    cidadao.getNome(),
-                    cidadao.getCpf());
-        }
-        return null;
+    private boolean verificaIdade() {
+        return nonNull(cidadao.getPlanoDeVacinacao().getIdadeMinimaParaVacinacao()) &&
+                cidadao.getIdade() > cidadao.getPlanoDeVacinacao().getIdadeMinimaParaVacinacao();
     }
 
-    private String verificaProfissao() {
-        if (cidadao.getPlanoDeVacinacao().getProfissoesPermitidas().contains(cidadao.getProfissao())) {
-            return String.format(
-                    "Pelo critério de profissão, o cidadão %s de CPF: %s está habilitado para tomar a primeira dose.%n",
-                    cidadao.getNome(),
-                    cidadao.getCpf());
-        }
-        return null;
+    private boolean verificaProfissao() {
+        return cidadao.getPlanoDeVacinacao().getProfissoesPermitidas().contains(cidadao.getProfissao());
     }
 
-
-    private String verificaComorbidades() {
-
-        List<String> c = cidadao.getComorbidades().stream()
-                .filter(comorbidade -> cidadao.getPlanoDeVacinacao().getComorbidadesPermitidas().contains(comorbidade))
-                .collect(Collectors.toList());
-
-        if(!c.isEmpty()) {
-            return String.format(
-                    "Pelo critério de comorbidades, o cidadão %s de CPF: %s está habilitado para tomar a primeira dose.%n",
-                    cidadao.getNome(),
-                    cidadao.getCpf());
-        }
-        return null;
+    private boolean verificaComorbidades() {
+        return cidadao.getComorbidades().stream().anyMatch(comorbidade ->
+                cidadao.getPlanoDeVacinacao().getComorbidadesPermitidas().contains(comorbidade));
     }
 }

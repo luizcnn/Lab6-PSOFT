@@ -21,11 +21,11 @@ public class HabilitadoParaSegundaDose implements StatusDeVacinacao {
     public void registraData() {
         if(cidadao.getStatusDeVacinacao() instanceof VacinacaoFinalizada) {
             LocalDate registro = LocalDate.now();
-            System.out.printf("Data de Vacinação (2a dose) de %s (CPF: %s): %s\n",
+            System.out.println(String.format("Data de Vacinação (2a dose) de %s (CPF: %s): %s",
                     cidadao.getNome(),
                     cidadao.getCpf(),
                     registro.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-            );
+            ));
             cidadao.setDataDeVacinacao(registro);
         } else {
             System.out.println("O cidadão deve tomar a segunda dose antes de registrar a data de vacinação.");

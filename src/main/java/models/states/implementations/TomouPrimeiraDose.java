@@ -17,9 +17,6 @@ public class TomouPrimeiraDose implements StatusDeVacinacao {
     @Override
     public void update() {
         if(verificaPrazoParaSegundaDose()) {
-            System.out.printf("O cidadão %s de CPF %s está habilitado à tomar a segunda dose.",
-                    cidadao.getNome(), cidadao.getCpf()
-            );
             cidadao.changeStatus(new HabilitadoParaSegundaDose(cidadao));
         } else {
             deveAguardarPrazoDeDias();
@@ -48,10 +45,11 @@ public class TomouPrimeiraDose implements StatusDeVacinacao {
     @Override
     public String toString() {
         return String.format(
-                "O Cidadão %s de CPF %s tomou a primeira dose em: %s.",
+                "O Cidadão %s de CPF %s tomou a primeira dose em: %s. A segunda dose está prevista para: %s",
                 cidadao.getNome(),
                 cidadao.getCpf(),
-                cidadao.getDataDeVacinacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                cidadao.getDataDeVacinacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                cidadao.getDataDeVacinacao().plusDays(20).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
         );
     }
 }
