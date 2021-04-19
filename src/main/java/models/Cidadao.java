@@ -26,7 +26,7 @@ public class Cidadao {
         this.cpf = cpf;
         this.endereco = endereco;
         this.cartaoSUS = cartaoSUS;
-        this.profissao = profissao;
+        this.profissao = profissao.toLowerCase();
         this.statusDeVacinacao = new NaoHabilitado(this);
     }
 
