@@ -4,6 +4,7 @@ import models.states.StatusDeVacinacao;
 import models.states.implementations.NaoHabilitado;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Cidadao {
@@ -14,20 +15,18 @@ public class Cidadao {
     private String endereco;
     private String cartaoSUS;
     private String profissao;
-    private Set<String> comorbidades;
+    private final Set<String> comorbidades = new HashSet<>();
     private StatusDeVacinacao statusDeVacinacao;
     private LocalDate dataDeVacinacao;
     private PlanoDeVacinacao planoDeVacinacao;
 
-    public Cidadao(String nome, Integer idade, String cpf, String endereco, String cartaoSUS, String profissao,
-                   Set<String> comorbidades) {
+    public Cidadao(String nome, Integer idade, String cpf, String endereco, String cartaoSUS, String profissao) {
         this.nome = nome;
         this.idade = idade;
         this.cpf = cpf;
         this.endereco = endereco;
         this.cartaoSUS = cartaoSUS;
         this.profissao = profissao;
-        this.comorbidades = comorbidades;
         this.statusDeVacinacao = new NaoHabilitado(this);
     }
 
@@ -89,15 +88,11 @@ public class Cidadao {
     }
 
     public void setProfissao(String profissao) {
-        this.profissao = profissao;
-    }
-
-    public void setComorbidades(Set<String> comorbidades) {
-        this.comorbidades = comorbidades;
+        this.profissao = profissao.toLowerCase();
     }
 
     public void addComorbidade(String comorbidade) {
-        this.comorbidades.add(comorbidade);
+        this.comorbidades.add(comorbidade.toLowerCase());
     }
 
     public PlanoDeVacinacao getPlanoDeVacinacao() {

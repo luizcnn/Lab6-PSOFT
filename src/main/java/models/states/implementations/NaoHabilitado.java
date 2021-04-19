@@ -6,6 +6,7 @@ import models.states.StatusDeVacinacao;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
 
@@ -29,11 +30,6 @@ public class NaoHabilitado implements StatusDeVacinacao {
         System.out.println(toString());
     }
 
-    public boolean habilitaParaPrimeiraDose() {
-        List<Boolean> resultados = Arrays.asList(verificaIdade(), verificaProfissao(), verificaComorbidades());
-        return resultados.stream().anyMatch(Predicate.isEqual(true));
-    }
-
     @Override
     public String toString() {
         return String.format(
@@ -41,6 +37,10 @@ public class NaoHabilitado implements StatusDeVacinacao {
                 cidadao.getNome(),
                 cidadao.getCpf()
         );
+    }
+
+    private boolean habilitaParaPrimeiraDose() {
+        return Stream.of(verificaIdade(), verificaProfissao(), verificaComorbidades()).anyMatch(Predicate.isEqual(true));
     }
 
     private boolean verificaIdade() {

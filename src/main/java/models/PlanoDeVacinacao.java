@@ -38,12 +38,12 @@ public class PlanoDeVacinacao {
     }
 
     public void addComorbidadePermitida(String comorbidade) {
-        comorbidadesPermitidas.add(comorbidade);
+        comorbidadesPermitidas.add(comorbidade.toLowerCase());
         notificaCidadaosSobreMudancasNosCriterios();
     }
 
     public void addProfissaoPermitida(String profissao) {
-        profissoesPermitidas.add(profissao);
+        profissoesPermitidas.add(profissao.toLowerCase());
         notificaCidadaosSobreMudancasNosCriterios();
     }
 

@@ -18,20 +18,6 @@ public class HabilitadoParaSegundaDose implements StatusDeVacinacao {
         aplicarDose();
     }
 
-    public void registraData() {
-        if(cidadao.getStatusDeVacinacao() instanceof VacinacaoFinalizada) {
-            LocalDate registro = LocalDate.now();
-            System.out.println(String.format("Data de Vacinação (2a dose) de %s (CPF: %s): %s",
-                    cidadao.getNome(),
-                    cidadao.getCpf(),
-                    registro.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-            ));
-            cidadao.setDataDeVacinacao(registro);
-        } else {
-            System.out.println("O cidadão deve tomar a segunda dose antes de registrar a data de vacinação.");
-        }
-    }
-
     public void aplicarDose() {
         cidadao.changeStatus(new VacinacaoFinalizada(cidadao));
         registraData();
@@ -44,5 +30,19 @@ public class HabilitadoParaSegundaDose implements StatusDeVacinacao {
                 cidadao.getNome(),
                 cidadao.getCpf()
         );
+    }
+
+    private void registraData() {
+        if(cidadao.getStatusDeVacinacao() instanceof VacinacaoFinalizada) {
+            LocalDate registro = LocalDate.now();
+            System.out.println(String.format("Data de Vacinação (2a dose) de %s (CPF: %s): %s",
+                    cidadao.getNome(),
+                    cidadao.getCpf(),
+                    registro.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            ));
+            cidadao.setDataDeVacinacao(registro);
+        } else {
+            System.out.println("O cidadão deve tomar a segunda dose antes de registrar a data de vacinação.");
+        }
     }
 }

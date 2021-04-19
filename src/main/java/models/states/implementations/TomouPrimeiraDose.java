@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class TomouPrimeiraDose implements StatusDeVacinacao {
 
     private final Cidadao cidadao;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public TomouPrimeiraDose(Cidadao cidadao) {
         this.cidadao = cidadao;
@@ -32,14 +33,15 @@ public class TomouPrimeiraDose implements StatusDeVacinacao {
         }
     }
 
-    public boolean verificaPrazoParaSegundaDose() {
+    private boolean verificaPrazoParaSegundaDose() {
         return LocalDate.now().minusDays(20).compareTo(cidadao.getDataDeVacinacao()) >= 0;
     }
 
-    public void deveAguardarPrazoDeDias() {
+    private void deveAguardarPrazoDeDias() {
         System.out.println("O cidadão ainda deve aguardar o intervalo de dias mínimo " +
                 "para a segunda dose. Está previsto para: " +
-                cidadao.getDataDeVacinacao().plusDays(20).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                cidadao.getDataDeVacinacao().plusDays(20).format(DATE_TIME_FORMATTER)
+        );
     }
 
     @Override
@@ -48,8 +50,8 @@ public class TomouPrimeiraDose implements StatusDeVacinacao {
                 "O Cidadão %s de CPF %s tomou a primeira dose em: %s. A segunda dose está prevista para: %s",
                 cidadao.getNome(),
                 cidadao.getCpf(),
-                cidadao.getDataDeVacinacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                cidadao.getDataDeVacinacao().plusDays(20).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                cidadao.getDataDeVacinacao().format(DATE_TIME_FORMATTER),
+                cidadao.getDataDeVacinacao().plusDays(20).format(DATE_TIME_FORMATTER)
         );
     }
 }

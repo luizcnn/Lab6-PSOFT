@@ -1,6 +1,7 @@
 import models.Cidadao;
 import models.PlanoDeVacinacao;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -95,22 +96,18 @@ public class VacinacaoCovid {
         String profissao = sc.next();
         sc.nextLine();
 
+        Cidadao cidadao = new Cidadao(nome, idade, cpf, endereco, sus, profissao);
         System.out.print("Comorbidades (separe-as por vírgulas): ");
-        Set<String> comorbidades = converteParaSet(sc.nextLine());
+        converteParaSet(cidadao, sc.nextLine());
 
-        Cidadao cidadao = new Cidadao(nome, idade, cpf, endereco, sus, profissao, comorbidades);
+
         planoDeVacinacao.addCidadao(cidadao);
 
         System.out.println("Cadastro realizado com sucesso! \n");
     }
 
-    private static Set<String> converteParaSet(String entrada) {
-        Set<String> set = new HashSet<>();
-        String[] splited = entrada.split(", ");
-
-        Collections.addAll(set, splited);
-
-        return set;
+    private static void converteParaSet(Cidadao cidadao, String entrada) {
+        Arrays.stream(entrada.split(", ")).forEach(cidadao::addComorbidade);
     }
 
     private static void exibeStatusDeVacinacaoDeCidadao(Scanner sc, PlanoDeVacinacao planoDeVacinacao) {
